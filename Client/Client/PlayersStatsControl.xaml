@@ -6,8 +6,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="70" d:DesignWidth="200">
     <Grid MinWidth="200" MinHeight="70">
-        <ProgressBar Height="50" HorizontalAlignment="Left" Margin="10,0,0,0" Name="playersHealth" VerticalAlignment="Center" Width="20" Orientation="Vertical" Maximum="100" Value="{Binding Path=Health}" />
-        <ProgressBar Height="50" HorizontalAlignment="Left" Margin="35,0,0,0" Name="playersMana" VerticalAlignment="Center" Width="20" Orientation="Vertical" Foreground="Turquoise" Maximum="100" Value="{Binding Path=Mana}" />
+        <ProgressBar Height="50" HorizontalAlignment="Left" Margin="10,0,0,0" Name="playersHealth" VerticalAlignment="Center" Width="20" Orientation="Vertical" Maximum="100" Value="{Binding Path=Health, Mode=OneWay}" ValueChanged="playersHealth_ValueChanged"/>
+        <ProgressBar Height="50" HorizontalAlignment="Left" Margin="35,0,0,0" Name="playersMana" VerticalAlignment="Center" Width="20" Orientation="Vertical" Foreground="Turquoise" Maximum="100" Value="{Binding Path=Mana, Mode=OneWay}" />
         <Label Content="{Binding Path=UserName}" Height="35" HorizontalAlignment="Left" Margin="60,5,0,0" Name="labelUserName" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
         <Label Content="{Binding Path=Score}" Height="28" HorizontalAlignment="Left" Margin="70,0,0,10" Name="labelScore" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontWeight="Bold"/>
     </Grid>

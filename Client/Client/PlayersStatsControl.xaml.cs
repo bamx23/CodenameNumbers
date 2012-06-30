@@ -23,5 +23,10 @@ namespace Client
         {
             InitializeComponent();
         }
+
+        private void playersHealth_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            MainWindow.healthBarChanged(sender, e);
+        }
     }
 }

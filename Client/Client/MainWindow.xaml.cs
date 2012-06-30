@@ -35,18 +35,21 @@ namespace Client
                                                       Key.NumPad9,
                                                       Key.Enter, 
                                                   };
-        private List<Hit> hits;
+
+        private Game game;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            hits = new List<Hit>();
-            hits.Add(new Hit(0, 0));
+            game = new Game(this);
+            Game.me = new Player(0, "Bam");
+            game.AddPlayer(Game.me);
 
-            listBoxOut.ItemsSource = hits;
+            myHealthBar.DataContext = Game.me;
+            myManaBar.DataContext = Game.me;
+
             listBoxOut.Items.Refresh();
-
             hitInput.SelectAll();
         }
 
@@ -54,10 +57,14 @@ namespace Client
         {
             listBoxOut.Items.Refresh();
 
-            listBoxOut.SelectedItem = listBoxOut.Items.GetItemAt(listBoxOut.Items.Count - 1);
-            listBoxOut.ScrollIntoView(listBoxOut.SelectedItem);
-            ListBoxItem item = listBoxOut.ItemContainerGenerator.ContainerFromItem(listBoxOut.SelectedItem) as ListBoxItem;
-            item.Focus();
+            if (listBoxOut.Items.Count > 1)
+            {
+                listBoxOut.SelectedItem = listBoxOut.Items.GetItemAt(listBoxOut.Items.Count - 1);
+                listBoxOut.ScrollIntoView(listBoxOut.SelectedItem);
+                ListBoxItem item =
+                    listBoxOut.ItemContainerGenerator.ContainerFromItem(listBoxOut.SelectedItem) as ListBoxItem;
+                item.Focus();
+            }
 
             hitInput.Focus();
         }
@@ -75,14 +82,18 @@ namespace Client
                 case Key.Enter:
                     if (((TextBox)sender).Text.Length != 0)
                     {
-                        hits.Add(new Hit(int.Parse(((TextBox)sender).Text), 1));
+                        game.AddHit(Game.me.UserId, true, int.Parse(((TextBox) sender).Text), DateTime.UtcNow.Ticks);
                         ((TextBox)sender).Text = "";
                         UpdateList();
-                        progressBar1.Value -= 5;
                     }
                     break;
             }
 
+        }
+
+        private void myHealthBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            healthBarChanged(sender, e);
         }
 
         private void hitInput_LostFocus(object sender, RoutedEventArgs e)
@@ -90,43 +101,33 @@ namespace Client
             UpdateList();
         }
 
-        private void progressBar1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public static void healthBarChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var bar = sender as ProgressBar;
-            const float k = 3f;
             bar.Foreground =
-                new SolidColorBrush(Color.FromScRgb(1, 1 - (float)Math.Pow((float) e.NewValue/(float) bar.Maximum, k),
-                                                    (float)Math.Pow((float) e.NewValue/(float) bar.Maximum, k), 0));
+                new SolidColorBrush(Color.FromScRgb(1, 1 - (float)Math.Pow((float) e.NewValue/(float) bar.Maximum, 3),
+                                                    (float)Math.Pow((float) e.NewValue/(float) bar.Maximum, 3), 0));
         }
 
         private int i = 0;
+        private Player u;
+        private PlayersStatsControl p;
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            var p = new PlayersStatsControl();
+            p = new PlayersStatsControl();
             gridPlayers.Children.Add(p);
             Grid.SetRow(p, i++);
 
-            var u = new Player(0, "Bam");
+            u = new Player(0, "Bam");
             p.DataContext = u;
 
             u.test();
         }
-    }
 
-    public class Hit
-    {
-        private int number;
-        private int UserId;
-
-        public Hit(int number, int userId)
+        private void button2_Click(object sender, RoutedEventArgs e)
         {
-            this.number = number;
-            UserId = userId;
+            u.test();
         }
 
-        public override string ToString()
-        {
-            return string.Format("{0}\t{1}", UserId, number);
-        }
     }
 }

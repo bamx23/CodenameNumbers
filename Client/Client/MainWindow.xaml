@@ -2,13 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Client" Height="430" Width="720" xmlns:my="clr-namespace:Client">
+
     <Grid>
         <TextBox Height="40" Width="200" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="0,0,0,50"  Name="hitInput" Text="123" FontSize="24" HorizontalContentAlignment="Center" KeyDown="hitInput_KeyDown" LostFocus="hitInput_LostFocus" />
         <Grid HorizontalAlignment="Center" Width="250" Margin="0,12,0,100">
-            <ListBox Name="listBoxOut"/>
+            <ListBox Name="listBoxOut">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Foreground" Value="{Binding Path=Foreground}"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
         </Grid>
-        <ProgressBar HorizontalAlignment="Left" Margin="12,12,0,100" Name="progressBar1" Width="36" Orientation="Vertical" Value="100" Foreground="Lime" ValueChanged="progressBar1_ValueChanged" />
-        <ProgressBar Foreground="Turquoise" HorizontalAlignment="Left" Margin="54,12,0,100" Name="progressBar2" Orientation="Vertical" Value="0" Width="36" />
+        <ProgressBar HorizontalAlignment="Left" Margin="12,12,0,100" Name="myHealthBar" Width="36" Orientation="Vertical" Value="{Binding Path=Health, Mode=OneWay}" Foreground="Lime" ValueChanged="myHealthBar_ValueChanged" />
+        <ProgressBar Value="{Binding Path=Mana, Mode=OneWay}" Foreground="Turquoise" HorizontalAlignment="Left" Margin="54,12,0,100" Name="myManaBar" Orientation="Vertical" Width="36" />
         <Grid HorizontalAlignment="Right" Margin="0,12,10,100" Name="gridPlayers" Width="200">
             <Grid.RowDefinitions>
                 <RowDefinition Height="70" />
@@ -17,6 +24,7 @@
                 <RowDefinition Height="70" />
             </Grid.RowDefinitions>
         </Grid>
-        <Button Content="Test" Height="23" HorizontalAlignment="Left" Margin="84,311,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <Button Content="Test" Height="23" HorizontalAlignment="Left" Margin="54,313,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="135,313,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
     </Grid>
 </Window>

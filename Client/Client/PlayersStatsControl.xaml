@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="Client.PlayersStatsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="70" d:DesignWidth="200">
+    <Grid MinWidth="200" MinHeight="70">
+        <ProgressBar Height="50" HorizontalAlignment="Left" Margin="10,0,0,0" Name="playersHealth" VerticalAlignment="Center" Width="20" Orientation="Vertical" Maximum="100" Value="{Binding Path=Health}" />
+        <ProgressBar Height="50" HorizontalAlignment="Left" Margin="35,0,0,0" Name="playersMana" VerticalAlignment="Center" Width="20" Orientation="Vertical" Foreground="Turquoise" Maximum="100" Value="{Binding Path=Mana}" />
+        <Label Content="{Binding Path=UserName}" Height="35" HorizontalAlignment="Left" Margin="60,5,0,0" Name="labelUserName" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <Label Content="{Binding Path=Score}" Height="28" HorizontalAlignment="Left" Margin="70,0,0,10" Name="labelScore" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontWeight="Bold"/>
+    </Grid>
+</UserControl>

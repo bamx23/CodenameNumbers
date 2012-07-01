@@ -57,14 +57,7 @@ namespace Client
             listBoxOut.Items.Refresh();
 
             if (listBoxOut.Items.Count > 1)
-            {
-                //listBoxOut.SelectedItem = listBoxOut.Items.GetItemAt(listBoxOut.Items.Count - 1);
-                //listBoxOut.ScrollIntoView(listBoxOut.SelectedItem);
                 listBoxOut.ScrollIntoView(listBoxOut.Items.GetItemAt(listBoxOut.Items.Count - 1));
-                /*ListBoxItem item =
-                    listBoxOut.ItemContainerGenerator.ContainerFromItem(listBoxOut.SelectedItem) as ListBoxItem;
-                item.Focus();*/
-            }
 
             hitInput.Focus();
         }

@@ -126,6 +126,7 @@ namespace Client
         {
             if(u != null)
                 u.test();
+            game.Gameover(false);
         }
 
     }

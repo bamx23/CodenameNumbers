@@ -5,7 +5,7 @@
 
     <Grid>
         <TextBox Height="40" Width="200" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="0,0,0,50"  Name="hitInput" Text="123" FontSize="24" HorizontalContentAlignment="Center" KeyDown="hitInput_KeyDown" LostFocus="hitInput_LostFocus" />
-        <Grid Margin="0,12,0,100">
+        <Grid Name="batleField" Margin="0,12,0,100">
             <Grid HorizontalAlignment="Center" Width="250">
                 <ListBox Name="listBoxOut">
                     <ListBox.ItemContainerStyle>
@@ -22,8 +22,13 @@
                 <Label Content="{Binding Path=Mana}" HorizontalContentAlignment="Center" Height="28" Width="36" HorizontalAlignment="Left" Margin="54,0,0,5" Name="labelMyMana" VerticalAlignment="Bottom" Foreground="Turquoise" FontSize="16" />
                 <Label Content="Score:" Height="28" HorizontalAlignment="Left" Margin="95,0,0,5" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontSize="16" />
                 <Label Content="{Binding Path=Score}" Height="28" HorizontalAlignment="Left" Margin="150,0,0,5" Name="labelMyScore" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontSize="16" />
+                
             </Grid>
             <Grid HorizontalAlignment="Right" Margin="0,0,10,0" Name="gridPlayers" Width="200" />
+            <Grid Height="120" HorizontalAlignment="Center" Name="gridGameOver" VerticalAlignment="Center" Width="400" Visibility="Hidden" Background="#FFDEDEDE">
+                <Label Content="GAME OVER" Height="48" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="28" />
+                <Label Content="YOU WIN!" Name="labelGameOverResult" Height="48" HorizontalAlignment="Center" Margin="0,55,0,0" VerticalAlignment="Top" FontSize="28" />
+            </Grid>
         </Grid>
         <Button Content="Test" Height="23" HorizontalAlignment="Left" Margin="54,313,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="135,313,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />

@@ -136,5 +136,17 @@ namespace Client
             player.SetScore(count);
             return true;
         }
+
+        /// <summary>
+        /// Show gameover message
+        /// </summary>
+        /// <param name="win">You win or you lose?</param>
+        public void Gameover(bool win)
+        {
+            window.hitInput.IsEnabled = false;
+            window.hitInput.Text = "";
+            window.labelGameOverResult.Content = win ? "YOU WIN!" : "YOU LOSE!";
+            window.gridGameOver.Visibility = Visibility.Visible;
+        }
     }
 }

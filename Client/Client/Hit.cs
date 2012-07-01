@@ -9,9 +9,9 @@ namespace Client
 {
     public class Hit
     {
-        private int number;
-        private Player player;
-        private bool correct;
+        private readonly int number;
+        private readonly Player player;
+        private readonly bool correct;
         private long timestamp;
 
         public Brush Foreground
@@ -25,8 +25,6 @@ namespace Client
             this.correct = correct;
             this.player = player;
             this.timestamp = timestamp;
-
-            ListBoxItem x;
         }
 
         public override string ToString()

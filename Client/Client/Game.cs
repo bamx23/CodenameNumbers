@@ -2,20 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Client
 {
     class Game
     {
+        public static readonly Timer timer;
         private readonly MainWindow window;
 
         private readonly List<Player> players;
         private readonly Dictionary<Player, PlayersStatsControl> playerControls;
         private readonly List<Hit> hits;
+
+        private readonly List<Skill> skills;
+        private readonly Dictionary<Skill, SkillControl> skillControls;
         
         public static Player me;
+
+        static Game()
+        {
+            timer = new Timer();
+            timer.Interval = 100;
+        }
 
         /// <summary>
         /// Constructor for new Game
@@ -23,11 +35,16 @@ namespace Client
         /// <param name="window">MainWindow object of application</param>
         public Game(MainWindow window)
         {
+            
+            timer.Enabled = true;
+
             this.window = window;
 
             players = new List<Player>(); 
             playerControls = new Dictionary<Player, PlayersStatsControl>();
             
+            skills = new List<Skill>();
+            skillControls = new Dictionary<Skill, SkillControl>();
 
             hits = new List<Hit>();
             window.listBoxOut.ItemsSource = hits;
@@ -43,9 +60,7 @@ namespace Client
             players.Add(player);
 
             var pControl = new PlayersStatsControl();
-            var playerRow = new RowDefinition();
-            playerRow.Height = new GridLength(70);
-            window.gridPlayers.RowDefinitions.Add(playerRow);
+            window.gridPlayers.RowDefinitions.Add(new RowDefinition { Height = new GridLength(pControl.MinHeight) });
             window.gridPlayers.Children.Add(pControl);
             Grid.SetRow(pControl, players.Count-1);
 
@@ -70,6 +85,47 @@ namespace Client
             window.gridPlayers.Children.Remove(playerControls[player]);
             playerControls.Remove(player);
             players.Remove(player);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Add new skill to Game
+        /// </summary>
+        /// <param name="skill">Object of new skill</param>
+        /// <returns></returns>
+        public bool AddSkill(Skill skill)
+        {
+            skills.Add(skill);
+
+            var sControl = new SkillControl();
+            window.gridSkills.RowDefinitions.Add(new RowDefinition { Height = new GridLength(sControl.MinHeight) });
+            window.gridSkills.Children.Add(sControl);
+            Grid.SetRow(sControl, skills.Count - 1);
+
+            sControl.DataContext = skill;
+            skillControls.Add(skill, sControl);
+
+            window.KeyDown += skill.KeyDown;
+            window.hitInput.KeyDown += skill.KeyDown;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes all skills from Game
+        /// </summary>
+        /// <returns></returns>
+        public bool ClearSkills()
+        {
+            foreach (var skillControl in skillControls)
+            {
+                window.gridSkills.Children.Remove(skillControl.Value);
+                window.KeyDown -= skillControl.Key.KeyDown;
+                window.hitInput.KeyDown -= skillControl.Key.KeyDown;
+            }
+            skills.Clear();
+            skillControls.Clear();
 
             return true;
         }

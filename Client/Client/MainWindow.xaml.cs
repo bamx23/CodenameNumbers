@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -36,7 +38,7 @@ namespace Client
                                                       Key.Enter, 
                                                   };
 
-        private Game game;
+        private readonly Game game;
 
         public MainWindow()
         {
@@ -50,6 +52,7 @@ namespace Client
 
             listBoxOut.Items.Refresh();
             hitInput.SelectAll();
+            KeyDown += inputKeyDown;
         }
 
         public void UpdateHitsList()
@@ -63,20 +66,23 @@ namespace Client
         }
 
         private int hitCounter = 0;
-        private void hitInput_KeyDown(object sender, KeyEventArgs e)
+        private void inputKeyDown(object sender, KeyEventArgs e)
         {
-            if (!AvailableKeys.Contains(e.Key))
+            e.Handled = true;
+
+            int dig = e.Key.TryParseDigit();
+            if (dig != -1)
             {
-                e.Handled = true;
+                hitInput.Text += dig.ToString(CultureInfo.InvariantCulture);
                 return;
             }
 
             switch (e.Key)
             {
                 case Key.Enter:
-                    if (((TextBox)sender).Text.Length != 0)
+                    if (hitInput.Text.Length != 0)
                     {
-                        var hit = int.Parse(((TextBox) sender).Text);
+                        var hit = int.Parse(hitInput.Text);
                         game.AddHit(Game.me.UserId, hit == hitCounter + 1, hit, DateTime.UtcNow.Ticks);
                         if (hitCounter + 1 == hit)
                         {
@@ -88,21 +94,25 @@ namespace Client
                             Game.me.SetScore(Game.me.Score - 10);
                             Game.me.Damage(5);
                         }
-                        ((TextBox)sender).Text = "";
+                        hitInput.Text = "";
                     }
                     break;
-            }
 
+                case Key.Space:
+                case Key.Back:
+                    if (hitInput.Text.Length != 0)
+                        hitInput.Text = hitInput.Text.Substring(0, hitInput.Text.Length - 1);
+                    break;
+
+                default:
+                    e.Handled = false;
+                    break;
+            }
         }
 
         private void myHealthBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             healthBarChanged(sender, e);
-        }
-
-        private void hitInput_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //UpdateHitsList();
         }
 
         public static void healthBarChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -115,18 +125,21 @@ namespace Client
 
         private int i = 0;
         private Player u;
+        private Skill s;
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             u = new Player(++i, "User #" + i);
             game.AddPlayer(u);
             u.test();
+            s = new Skill("Frost", Key.F, 5000);
+            game.AddSkill(s);
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             if(u != null)
                 u.test();
-            game.Gameover(false);
+            game.ClearSkills();
         }
 
     }

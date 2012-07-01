@@ -4,7 +4,7 @@
         Title="Client" Height="430" Width="720" xmlns:my="clr-namespace:Client">
 
     <Grid>
-        <TextBox Height="40" Width="200" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="0,0,0,50"  Name="hitInput" Text="123" FontSize="24" HorizontalContentAlignment="Center" KeyDown="hitInput_KeyDown" LostFocus="hitInput_LostFocus" />
+        <TextBox Height="40" Width="200" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="0,0,0,50"  Name="hitInput" Text="123" FontSize="24" HorizontalContentAlignment="Center" PreviewKeyDown="inputKeyDown" IsReadOnly="True" />
         <Grid Name="batleField" Margin="0,12,0,100">
             <Grid HorizontalAlignment="Center" Width="250">
                 <ListBox Name="listBoxOut">
@@ -15,6 +15,7 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
             </Grid>
+            
             <Grid Name="myStats">
                 <ProgressBar HorizontalAlignment="Left" Margin="12,0,0,30" Name="myHealthBar" Width="36" Orientation="Vertical" Value="{Binding Path=Health, Mode=OneWay}" Foreground="Lime" ValueChanged="myHealthBar_ValueChanged" />
                 <ProgressBar HorizontalAlignment="Left" Margin="54,0,0,30" Name="myManaBar" Width="36" Orientation="Vertical" Value="{Binding Path=Mana, Mode=OneWay}" Foreground="Turquoise" />
@@ -22,8 +23,8 @@
                 <Label Content="{Binding Path=Mana}" HorizontalContentAlignment="Center" Height="28" Width="36" HorizontalAlignment="Left" Margin="54,0,0,5" Name="labelMyMana" VerticalAlignment="Bottom" Foreground="Turquoise" FontSize="16" />
                 <Label Content="Score:" Height="28" HorizontalAlignment="Left" Margin="95,0,0,5" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontSize="16" />
                 <Label Content="{Binding Path=Score}" Height="28" HorizontalAlignment="Left" Margin="150,0,0,5" Name="labelMyScore" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontSize="16" />
-                
             </Grid>
+            <Grid Name="gridSkills" Width="120" HorizontalAlignment="Left" Margin="96,0,0,30"/>
             <Grid HorizontalAlignment="Right" Margin="0,0,10,0" Name="gridPlayers" Width="200" />
             <Grid Height="120" HorizontalAlignment="Center" Name="gridGameOver" VerticalAlignment="Center" Width="400" Visibility="Hidden" Background="#FFDEDEDE">
                 <Label Content="GAME OVER" Height="48" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="28" />

@@ -20,6 +20,8 @@
                 <ProgressBar HorizontalAlignment="Left" Margin="54,0,0,30" Name="myManaBar" Width="36" Orientation="Vertical" Value="{Binding Path=Mana, Mode=OneWay}" Foreground="Turquoise" />
                 <Label Content="{Binding Path=Health}" HorizontalContentAlignment="Center" Height="28" Width="36" HorizontalAlignment="Left" Margin="12,0,0,5" Name="labelMyHealth" VerticalAlignment="Bottom" Foreground="Chartreuse" FontSize="16" />
                 <Label Content="{Binding Path=Mana}" HorizontalContentAlignment="Center" Height="28" Width="36" HorizontalAlignment="Left" Margin="54,0,0,5" Name="labelMyMana" VerticalAlignment="Bottom" Foreground="Turquoise" FontSize="16" />
+                <Label Content="Score:" Height="28" HorizontalAlignment="Left" Margin="95,0,0,5" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontSize="16" />
+                <Label Content="{Binding Path=Score}" Height="28" HorizontalAlignment="Left" Margin="150,0,0,5" Name="labelMyScore" VerticalAlignment="Bottom" Foreground="DodgerBlue" FontSize="16" />
             </Grid>
             <Grid HorizontalAlignment="Right" Margin="0,0,10,0" Name="gridPlayers" Width="200" />
         </Grid>

@@ -78,9 +78,17 @@ namespace Client
                     {
                         var hit = int.Parse(((TextBox) sender).Text);
                         game.AddHit(Game.me.UserId, hit == hitCounter + 1, hit, DateTime.UtcNow.Ticks);
-                        if (hitCounter + 1 == hit) hitCounter++;
+                        if (hitCounter + 1 == hit)
+                        {
+                            hitCounter++;
+                            Game.me.SetScore(Game.me.Score + 10);
+                        }
+                        else
+                        {
+                            Game.me.SetScore(Game.me.Score - 10);
+                            Game.me.Damage(5);
+                        }
                         ((TextBox)sender).Text = "";
-                        
                     }
                     break;
             }

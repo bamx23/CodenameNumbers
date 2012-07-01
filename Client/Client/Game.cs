@@ -93,17 +93,47 @@ namespace Client
         }
 
         /// <summary>
-        /// Set a damage to player
+        /// Set HP of player
         /// </summary>
-        /// <param name="playerId">ID of player, who've got a damage</param>
-        /// <param name="count">Amount of damage geted by player. Can be negative(regeneration)</param>
+        /// <param name="playerId">ID of player to change HP</param>
+        /// <param name="count">New value of HP</param>
         /// <returns></returns>
-        public bool Damage(int playerId, int count)
+        public bool SetHealth(int playerId, int count)
         {
             var player = players.Find(p => p.UserId == playerId);
             if (player == null) return false;
 
-            me.Damage(count);
+            player.Damage(player.Health - count);
+            return true;
+        }
+
+        /// <summary>
+        /// Set MP of player
+        /// </summary>
+        /// <param name="playerId">ID of player to change MP</param>
+        /// <param name="count">New value of MP</param>
+        /// <returns></returns>
+        public bool SetMana(int playerId, int count)
+        {
+            var player = players.Find(p => p.UserId == playerId);
+            if (player == null) return false;
+
+            player.SetMana(count);
+            return true;
+        }
+
+        /// <summary>
+        /// Set score of player
+        /// </summary>
+        /// <param name="playerId">ID of player to change score</param>
+        /// <param name="count">New value of score</param>
+        /// <returns></returns>
+        public bool SetScore(int playerId, int count)
+        {
+            var player = players.Find(p => p.UserId == playerId);
+            if (player == null) return false;
+
+            player.SetScore(count);
             return true;
         }
     }

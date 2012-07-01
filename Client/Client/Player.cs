@@ -45,6 +45,16 @@ namespace Client
             Health = Math.Max(0, Health - count);
         }
 
+        public void SetMana(int count)
+        {
+            Mana = Math.Max(0, count);
+        }
+
+        public void SetScore(int count)
+        {
+            Score = Math.Max(0, count);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged(string property)
         {

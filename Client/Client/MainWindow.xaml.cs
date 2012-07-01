@@ -46,29 +46,30 @@ namespace Client
             Game.me = new Player(0, "Bam");
             game.AddPlayer(Game.me);
 
-            myHealthBar.DataContext = Game.me;
-            myManaBar.DataContext = Game.me;
+            myStats.DataContext = Game.me;
 
             listBoxOut.Items.Refresh();
             hitInput.SelectAll();
         }
 
-        private void UpdateList()
+        public void UpdateHitsList()
         {
             listBoxOut.Items.Refresh();
 
             if (listBoxOut.Items.Count > 1)
             {
-                listBoxOut.SelectedItem = listBoxOut.Items.GetItemAt(listBoxOut.Items.Count - 1);
-                listBoxOut.ScrollIntoView(listBoxOut.SelectedItem);
-                ListBoxItem item =
+                //listBoxOut.SelectedItem = listBoxOut.Items.GetItemAt(listBoxOut.Items.Count - 1);
+                //listBoxOut.ScrollIntoView(listBoxOut.SelectedItem);
+                listBoxOut.ScrollIntoView(listBoxOut.Items.GetItemAt(listBoxOut.Items.Count - 1));
+                /*ListBoxItem item =
                     listBoxOut.ItemContainerGenerator.ContainerFromItem(listBoxOut.SelectedItem) as ListBoxItem;
-                item.Focus();
+                item.Focus();*/
             }
 
             hitInput.Focus();
         }
 
+        private int hitCounter = 0;
         private void hitInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (!AvailableKeys.Contains(e.Key))
@@ -82,9 +83,11 @@ namespace Client
                 case Key.Enter:
                     if (((TextBox)sender).Text.Length != 0)
                     {
-                        game.AddHit(Game.me.UserId, true, int.Parse(((TextBox) sender).Text), DateTime.UtcNow.Ticks);
+                        var hit = int.Parse(((TextBox) sender).Text);
+                        game.AddHit(Game.me.UserId, hit == hitCounter + 1, hit, DateTime.UtcNow.Ticks);
+                        if (hitCounter + 1 == hit) hitCounter++;
                         ((TextBox)sender).Text = "";
-                        UpdateList();
+                        
                     }
                     break;
             }
@@ -98,7 +101,7 @@ namespace Client
 
         private void hitInput_LostFocus(object sender, RoutedEventArgs e)
         {
-            UpdateList();
+            //UpdateHitsList();
         }
 
         public static void healthBarChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -111,22 +114,17 @@ namespace Client
 
         private int i = 0;
         private Player u;
-        private PlayersStatsControl p;
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            p = new PlayersStatsControl();
-            gridPlayers.Children.Add(p);
-            Grid.SetRow(p, i++);
-
-            u = new Player(0, "Bam");
-            p.DataContext = u;
-
+            u = new Player(++i, "User #" + i);
+            game.AddPlayer(u);
             u.test();
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            u.test();
+            if(u != null)
+                u.test();
         }
 
     }

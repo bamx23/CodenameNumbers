@@ -5,24 +5,23 @@
 
     <Grid>
         <TextBox Height="40" Width="200" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="0,0,0,50"  Name="hitInput" Text="123" FontSize="24" HorizontalContentAlignment="Center" KeyDown="hitInput_KeyDown" LostFocus="hitInput_LostFocus" />
-        <Grid HorizontalAlignment="Center" Width="250" Margin="0,12,0,100">
-            <ListBox Name="listBoxOut">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Foreground" Value="{Binding Path=Foreground}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-        </Grid>
-        <ProgressBar HorizontalAlignment="Left" Margin="12,12,0,100" Name="myHealthBar" Width="36" Orientation="Vertical" Value="{Binding Path=Health, Mode=OneWay}" Foreground="Lime" ValueChanged="myHealthBar_ValueChanged" />
-        <ProgressBar Value="{Binding Path=Mana, Mode=OneWay}" Foreground="Turquoise" HorizontalAlignment="Left" Margin="54,12,0,100" Name="myManaBar" Orientation="Vertical" Width="36" />
-        <Grid HorizontalAlignment="Right" Margin="0,12,10,100" Name="gridPlayers" Width="200">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70" />
-                <RowDefinition Height="70" />
-                <RowDefinition Height="70" />
-                <RowDefinition Height="70" />
-            </Grid.RowDefinitions>
+        <Grid Margin="0,12,0,100">
+            <Grid HorizontalAlignment="Center" Width="250">
+                <ListBox Name="listBoxOut">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Foreground" Value="{Binding Path=Foreground}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+            <Grid Name="myStats">
+                <ProgressBar HorizontalAlignment="Left" Margin="12,0,0,30" Name="myHealthBar" Width="36" Orientation="Vertical" Value="{Binding Path=Health, Mode=OneWay}" Foreground="Lime" ValueChanged="myHealthBar_ValueChanged" />
+                <ProgressBar HorizontalAlignment="Left" Margin="54,0,0,30" Name="myManaBar" Width="36" Orientation="Vertical" Value="{Binding Path=Mana, Mode=OneWay}" Foreground="Turquoise" />
+                <Label Content="{Binding Path=Health}" HorizontalContentAlignment="Center" Height="28" Width="36" HorizontalAlignment="Left" Margin="12,0,0,5" Name="labelMyHealth" VerticalAlignment="Bottom" Foreground="Chartreuse" FontSize="16" />
+                <Label Content="{Binding Path=Mana}" HorizontalContentAlignment="Center" Height="28" Width="36" HorizontalAlignment="Left" Margin="54,0,0,5" Name="labelMyMana" VerticalAlignment="Bottom" Foreground="Turquoise" FontSize="16" />
+            </Grid>
+            <Grid HorizontalAlignment="Right" Margin="0,0,10,0" Name="gridPlayers" Width="200" />
         </Grid>
         <Button Content="Test" Height="23" HorizontalAlignment="Left" Margin="54,313,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="135,313,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />

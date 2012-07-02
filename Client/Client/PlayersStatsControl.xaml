@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="70" d:DesignWidth="200" MinWidth="200" MinHeight="70">
-    <Grid Background="#FF3D3D3D">
+    <Grid Margin="1">
+        <Border Background="#FF3D3D3D" BorderBrush="Silver" CornerRadius="3" BorderThickness="1"/>
         <ProgressBar Height="50" HorizontalAlignment="Left" Margin="10,0,0,0" Name="playersHealth" VerticalAlignment="Center" Width="20" Orientation="Vertical" Maximum="100" Value="{Binding Path=Health, Mode=OneWay}" ValueChanged="playersHealth_ValueChanged"/>
         <ProgressBar Height="50" HorizontalAlignment="Left" Margin="35,0,0,0" Name="playersMana" VerticalAlignment="Center" Width="20" Orientation="Vertical" Foreground="Turquoise" Maximum="100" Value="{Binding Path=Mana, Mode=OneWay}" />
         <Label Content="{Binding Path=UserName}" Height="35" HorizontalAlignment="Left" Margin="60,5,0,0" Name="labelUserName" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="White" />

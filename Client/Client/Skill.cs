@@ -31,8 +31,12 @@ namespace Client
         public string SkillName { get { return skillName; } protected set { skillName = value; NotifyPropertyChanged("SkillName"); } }
         public bool IsCooldown { get { return (DateTime.UtcNow - lastUse).TotalMilliseconds < cooldown; } }
         public long Cooldown { get { return (long)((DateTime.UtcNow - lastUse).TotalMilliseconds*100 / cooldown); } }
-        public Visibility Visible { get { return IsCooldown ? Visibility.Visible : Visibility.Hidden; } }
         public Key SkillKey { get { return useKey; } }
+
+        /// <summary>
+        /// For visualisation
+        /// </summary>
+        public Visibility Visible { get { return IsCooldown ? Visibility.Visible : Visibility.Hidden; } }
 
         public Skill(string name, Key useKey, long cooldown)
         {

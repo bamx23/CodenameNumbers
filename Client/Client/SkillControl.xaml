@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="120" MinWidth="120" MinHeight="50">
-    <Grid>
-        <ProgressBar Height="5" Margin="5,0,5,5" Name="progressBar1" VerticalAlignment="Bottom" Value="{Binding Path=Cooldown, Mode=OneWay}" Visibility="{Binding Path=Visible}" Foreground="#FF126DCE" Background="White" />
+    <Grid Margin="1">
         <Label Content="{Binding Path=SkillName}" Height="30" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Margin="0,5,5,0" Name="labelSkillName" VerticalAlignment="Top" FontWeight="Black" FontSize="16"/>
-        <Ellipse Height="25" HorizontalAlignment="Left" Margin="5,9,0,0" Name="ellipse1" Stroke="Black" VerticalAlignment="Top" Width="25" />
+        <Ellipse Height="25" HorizontalAlignment="Left" Margin="5,9,0,0" Name="ellipse1" Stroke="Silver" VerticalAlignment="Top" Width="25" StrokeThickness="2" />
         <Label Content="{Binding Path=SkillKey}" Margin="9,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="16" Height="27"/>
+        <Border BorderBrush="Silver" BorderThickness="1" Name="border" CornerRadius="3" />
+        <Border BorderBrush="Silver" BorderThickness="1" Name="borderHider" Background="#88CCCCCC" Visibility="{Binding Path=Visible}" CornerRadius="3"/>
+        <ProgressBar Height="5" Margin="5,0,5,5" Name="progressBar1" VerticalAlignment="Bottom" Value="{Binding Path=Cooldown, Mode=OneWay}" Visibility="{Binding Path=Visible}" Foreground="#FF126DCE" Background="White" />
     </Grid>
 </UserControl>

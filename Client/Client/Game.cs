@@ -25,8 +25,7 @@ namespace Client
 
         static Game()
         {
-            timer = new Timer();
-            timer.Interval = 500;
+            timer = new Timer {Interval = 500};
         }
 
         /// <summary>

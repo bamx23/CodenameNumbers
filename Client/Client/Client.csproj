@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NetClient.cs" />
     <Compile Include="Skill.cs" />
     <Compile Include="SkillControl.xaml.cs">
       <DependentUpon>SkillControl.xaml</DependentUpon>

@@ -29,7 +29,7 @@ namespace Client
 
         public override string ToString()
         {
-            return string.Format("{0}\t{1}", player == Game.me ? "Me" : player.UserName, number);
+            return string.Format("{0}\t\t{1}", player == Game.me ? "Me" : player.UserName, number);
         }
     }
 }

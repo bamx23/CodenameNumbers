@@ -82,6 +82,7 @@ namespace Client
                 case Key.Enter:
                     if (hitInput.Text.Length != 0)
                     {
+                        //TODO: HIT MAKES HERE
                         var hit = int.Parse(hitInput.Text);
                         game.AddHit(Game.me.UserId, hit == hitCounter + 1, hit, DateTime.UtcNow.Ticks);
                         if (hitCounter + 1 == hit)
@@ -133,6 +134,10 @@ namespace Client
             u.test();
             s = new Skill("Frost", Key.F, 5000);
             game.AddSkill(s);
+            s = new Skill("Slice", Key.S, 3000);
+            game.AddSkill(s);
+
+            UpdateHitsList();
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
@@ -140,6 +145,8 @@ namespace Client
             if(u != null)
                 u.test();
             game.ClearSkills();
+
+            UpdateHitsList();
         }
 
     }

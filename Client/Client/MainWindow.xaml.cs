@@ -39,6 +39,7 @@ namespace Client
                                                   };
 
         private readonly Game game;
+        private readonly NetClient client;
 
         public MainWindow()
         {
@@ -49,6 +50,9 @@ namespace Client
             game.AddPlayer(Game.me);
 
             myStats.DataContext = Game.me;
+
+            client = new NetClient("192.168.33.55");
+            client.ResponseEvent += ((o, e) => MessageBox.Show(e.Response));
 
             listBoxOut.Items.Refresh();
             hitInput.SelectAll();
@@ -84,11 +88,12 @@ namespace Client
                     {
                         //TODO: HIT MAKES HERE
                         var hit = int.Parse(hitInput.Text);
-                        game.AddHit(Game.me.UserId, hit == hitCounter + 1, hit, DateTime.UtcNow.Ticks);
+                        game.AddHit(Game.me.UserId, hit == hitCounter + 1, hit, DateTime.UtcNow.Ticks, true);
                         if (hitCounter + 1 == hit)
                         {
                             hitCounter++;
                             Game.me.SetScore(Game.me.Score + 10);
+                            //client.Send("test");
                         }
                         else
                         {
@@ -147,6 +152,11 @@ namespace Client
             game.ClearSkills();
 
             UpdateHitsList();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            client.Close();
         }
 
     }

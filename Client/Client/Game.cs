@@ -136,13 +136,16 @@ namespace Client
         /// <param name="correct">Flag of correct sended hit(in queue)</param>
         /// <param name="number">Sended number</param>
         /// <param name="timestamp">Time, when hit has been sent</param>
+        /// <param name="tempory">This hit is tempory(not aproved by server)</param>
         /// <returns></returns>
-        public bool AddHit(int playerId, bool correct, int number, long timestamp)
+        public bool AddHit(int playerId, bool correct, int number, long timestamp, bool tempory = false)
         {
             var player = players.Find(p => p.UserId == playerId);
             if (player == null) return false;
 
-            hits.Add(new Hit(number, correct, player, timestamp));
+            if (!tempory)
+                hits.RemoveAll(h => h.IsTempory && h.Timestamp < timestamp);
+            hits.Add(new Hit(number, correct, player, timestamp, tempory));
             window.UpdateHitsList();
             return true;
         }

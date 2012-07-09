@@ -57,7 +57,7 @@ namespace Client
 
         public void Send(string command)
         {
-            command = command.Trim(new[] { ' ', '\n', '\t' });
+            command = command.Trim(new[] {' ', '\n', '\t'});
 
             var output = new StreamWriter(stream);
             output.Write(command);
@@ -100,4 +100,3 @@ namespace Client
         }
     }
 }
-

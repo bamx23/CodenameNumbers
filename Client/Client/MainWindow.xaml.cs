@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Timers;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Client
 {
@@ -39,7 +33,7 @@ namespace Client
                                                   };
 
         private readonly Game game;
-        private readonly NetClient client;
+        public static NetClient Client;
 
         public MainWindow()
         {
@@ -50,9 +44,6 @@ namespace Client
             game.AddPlayer(Game.me);
 
             myStats.DataContext = Game.me;
-
-            client = new NetClient("192.168.33.55");
-            client.ResponseEvent += ((o, e) => MessageBox.Show(e.Response));
 
             listBoxOut.Items.Refresh();
             hitInput.SelectAll();
@@ -152,11 +143,6 @@ namespace Client
             game.ClearSkills();
 
             UpdateHitsList();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            client.Close();
         }
 
     }

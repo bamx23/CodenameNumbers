@@ -156,7 +156,7 @@ namespace Client
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            client.Close();
+            client.Stop();
         }
 
     }

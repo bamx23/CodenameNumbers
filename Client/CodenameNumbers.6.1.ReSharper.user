@@ -1,0 +1,63 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="A99DD69F-216B-419E-91FB-3B4A0374EB85/f:NetClient.cs" caret="0" fromTop="0" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:Skill.cs" caret="992" fromTop="15" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:NetClient.cs" caret="2289" fromTop="26" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:Game.cs" caret="765" fromTop="0" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:MainWindow.xaml.cs" caret="3339" fromTop="46" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:Hit.cs" caret="430" fromTop="12" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:MainWindow.xaml.cs" caret="1591" fromTop="9" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:MainWindow.xaml.cs" caret="1972" fromTop="23" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:MainWindow.xaml.cs" caret="1861" fromTop="4" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:MainWindow.xaml.cs" caret="5460" fromTop="12" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:MainWindow.xaml.cs" caret="3339" fromTop="13" />
+      <File id="F71605A7-9052-482E-AD92-298011CDC5CD/f:Hit.cs" caret="384" fromTop="9" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False" />
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="readonly" priority="0" />
+      <Item value="NetClient`0" priority="0" />
+      <Item value="new" priority="0" />
+      <Item value="NetClient" priority="0" />
+      <Item value="client" priority="2" />
+      <Item value="ResponseEventHandler" priority="0" />
+      <Item value="e" priority="1" />
+      <Item value="MessageBox`0" priority="0" />
+      <Item value="o" priority="0" />
+      <Item value="private" priority="0" />
+      <Item value="bool" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Client.NetClient">
+      <Item value="ResponseEvent" priority="0" />
+      <Item value="Close`0" priority="0" />
+      <Item value="Send`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Client.ResponseEventArgs">
+      <Item value="Response" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.MessageBox">
+      <Item value="Show`0" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

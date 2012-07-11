@@ -1,0 +1,52 @@
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+bin
+obj
+
+# Visual Studio
+[Dd]ebug/
+[Rr]elease/
+*.sln.cache
+*.suo
+*.csproj.user
+
+# Resharper
+*[Rr]e[Ss]harper.user
+_ReSharper.*/
+
+# mstest test results
+TestResults
+
+#PYTHON
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+#Translations
+*.mo
+
+#Mr Developer
+.mr.developer.cfg

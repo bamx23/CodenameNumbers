@@ -35,6 +35,8 @@ namespace Client
         private readonly Game game;
         public static NetClient Client;
 
+        public ServersListWindow serverListWindow;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -48,6 +50,12 @@ namespace Client
             listBoxOut.Items.Refresh();
             hitInput.SelectAll();
             KeyDown += inputKeyDown;
+        }
+
+        private void buttonLeave_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: Leave game here
+            Close();
         }
 
         public void UpdateHitsList()
@@ -144,5 +152,7 @@ namespace Client
 
             UpdateHitsList();
         }
+
+        
     }
 }

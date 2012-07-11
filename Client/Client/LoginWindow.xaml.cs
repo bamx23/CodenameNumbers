@@ -15,12 +15,13 @@ namespace Client
             try
             {
                 MainWindow.Client = new NetClient("192.168.33.55");
+                MainWindow.Client.Start();
                 MainWindow.Client.ResponseEvent += ((o, e) => MessageBox.Show(e.Response));
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-                Close();
+                //Close();
             }
         }
 
@@ -45,15 +46,15 @@ namespace Client
 
             //TODO: Login check here
 
-            var mw = new MainWindow();
-            mw.Show();
-            mw.Closed += (s, o) => Close();
+            var slw = new ServersListWindow();
+            slw.Show();
+            slw.Closed += (s, o) => Close();
             Hide();
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (MainWindow.Client != null)
+            if (MainWindow.Client != null && MainWindow.Client.Status != NetClientStatus.Stopped)
                 MainWindow.Client.Stop();
         }
 

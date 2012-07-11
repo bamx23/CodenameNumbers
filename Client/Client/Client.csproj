@@ -65,6 +65,10 @@
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="NetClient.cs" />
+    <Compile Include="Server.cs" />
+    <Compile Include="ServersListWindow.xaml.cs">
+      <DependentUpon>ServersListWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Skill.cs" />
     <Compile Include="SkillControl.xaml.cs">
       <DependentUpon>SkillControl.xaml</DependentUpon>
@@ -89,6 +93,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PlayersStatsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ServersListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

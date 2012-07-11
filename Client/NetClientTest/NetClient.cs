@@ -115,6 +115,7 @@ namespace Client
             if (Status == NetClientStatus.Working)
                 throw new Exception("Cannot start server because it is already working");
 
+            
             tcpClient = new TcpClient(Host, Port);
             stream = tcpClient.GetStream();
             Status = NetClientStatus.Working;

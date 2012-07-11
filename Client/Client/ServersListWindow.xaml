@@ -1,0 +1,16 @@
+﻿<Window x:Class="Client.ServersListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CodenameNumbers - Servers List" Height="259" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Grid>
+        <ListBox Margin="15,10,15,40" Name="listBoxServers">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Foreground" Value="{Binding Path=Foreground}"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <Button Content="Подключиться" Height="23" HorizontalAlignment="Right" Margin="0,0,20,10" Name="buttonConnect" VerticalAlignment="Bottom" Width="100" Click="buttonConnect_Click" />
+        <Button Content="Обновить" Height="23" HorizontalAlignment="Right" Margin="0,0,125,10" Name="buttonRefresh" VerticalAlignment="Bottom" Width="100" Click="buttonRefresh_Click" />
+    </Grid>
+</Window>

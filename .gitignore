@@ -3,7 +3,8 @@ bin
 obj
 
 # Resharper
-_ReSharper.CodenameNumbers
+*[Rr]e[Ss]harper.user
+_ReSharper.*/
 
 # mstest test results
 TestResults

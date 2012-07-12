@@ -1,31 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Client
 {
     /// <summary>
     /// Interaction logic for ServersList.xaml
     /// </summary>
-    public partial class ServersListWindow : Window
+    public partial class GameSessionListWindow : Window
     {
-        public List<Server> serversList;
+        public List<GameSession> gameSessionList;
 
-        public ServersListWindow()
+        public GameSessionListWindow()
         {
             InitializeComponent();
 
-            serversList = new List<Server>();
-            listBoxServers.ItemsSource = serversList;
+            gameSessionList = new List<GameSession>();
+            listBoxServers.ItemsSource = gameSessionList;
         }
 
         private int id = 0;
@@ -34,7 +26,7 @@ namespace Client
             //TODO: Update Server List here
 
             //Test:
-            serversList.Add(new Server() { Id = id, Name = "Сервер #"+id, PlayersCount = new Random((int)DateTime.Now.Ticks).Next(5), PlayersLimit = 4 });
+            gameSessionList.Add(new GameSession() { Id = id, Name = "Игра #"+id, PlayersCount = new Random((int)DateTime.Now.Ticks).Next(5), PlayersLimit = 4 });
             ++id;
 
             listBoxServers.Items.Refresh();
@@ -51,7 +43,7 @@ namespace Client
                 return;
             }
 
-            var server = (Server) listBoxServers.SelectedItem;
+            var server = (GameSession) listBoxServers.SelectedItem;
 
             //TODO: Connect to server
 

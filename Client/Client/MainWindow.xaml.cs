@@ -35,7 +35,7 @@ namespace Client
         private readonly Game game;
         public static NetClient Client;
 
-        public ServersListWindow serverListWindow;
+        public GameSessionListWindow serverListWindow;
 
         public MainWindow()
         {

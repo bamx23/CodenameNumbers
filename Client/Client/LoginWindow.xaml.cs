@@ -46,7 +46,7 @@ namespace Client
 
             //TODO: Login check here
 
-            var slw = new ServersListWindow();
+            var slw = new GameSessionListWindow();
             slw.Show();
             slw.Closed += (s, o) => Close();
             Hide();

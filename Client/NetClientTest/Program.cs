@@ -13,38 +13,17 @@ namespace NetClientTest
 
         static void Main(string[] args)
         {
-            var client = new NetClient("192.168.33.55");
+            var gClient = new GameClient("luckygeck.dyndns-home.com");
 
-            //client.ResponseEvent += (o, e) => Console.WriteLine("server answer is " + e.Response);
-            //client.NetErrorEvent += (o, e) => Console.WriteLine("server error is " + e.Error);
+            gClient.Client.ResponseEvent += (o, e) => Console.WriteLine("server answer is (" + e.Message() + ")");
+            gClient.NetErrorEvent += (o, e) => Console.WriteLine("Net error occuried: " + e.Error);
 
-            client.Start();
+            //gClient.Start();
 
-            while (true)
-            {
-                var command = Console.ReadLine();
+            gClient.Login("username", "megapassword");
+            Console.ReadLine();
+            gClient.Stop();
 
-                if (command == "exit")
-                    break;
-
-                var operand = Console.ReadLine();
-                var dict = new Dictionary<string, string>();
-
-                dict[command] = operand;
-
-                var lst = new List<Dictionary<string, string>>();
-                lst.Add(dict);
-
-                var json = JSON.Instance.ToJSON(lst);
-
-                while (true)
-                {
-                    client.Send(json);
-                    Thread.Sleep(1);
-                }
-                
-            }
-            client.Stop();
         }
     }
 }

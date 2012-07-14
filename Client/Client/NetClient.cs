@@ -7,40 +7,33 @@ using System.Threading;
 
 namespace Client
 {
-    public delegate void ResponseEventHandler(object sender, ResponseEventArgs e);
+    public delegate void MessageEventHandler(object sender, MessageEventArgs e);
 
-    public delegate void SendEventHandler(object sender, SendEventArgs e);
-
-    public delegate void NetErrorEventHandler(object sender, NetErrorEventArgs e);
-
-    public class ResponseEventArgs : EventArgs
+    public class MessageEventArgs : EventArgs
     {
-        public ResponseEventArgs(string response)
+        public byte[] ByteMessage { get; protected set; }
+
+        public Encoding DefaultEncoding { get; protected set; }
+
+        public MessageEventArgs(byte[] message, Encoding defaultEncoding)
         {
-            Response = response;
+            ByteMessage = message;
+            DefaultEncoding = defaultEncoding;
         }
 
-        public string Response { get; protected set; }
-    }
-
-    public class SendEventArgs : EventArgs
-    {
-        public SendEventArgs(string message)
+        /// <summary>
+        /// Using Default encoding(ASCII)
+        /// </summary>
+        /// <returns></returns>
+        public string Message()
         {
-            Message = message;
+            return Message(Encoding.ASCII);
         }
 
-        public string Message { get; protected set; }
-    }
-
-    public class NetErrorEventArgs : EventArgs
-    {
-        public NetErrorEventArgs(string error)
+        public string Message(Encoding encoding)
         {
-            Error = error;
+            return encoding.GetString(ByteMessage);
         }
-
-        public string Error { get; protected set; }
     }
 
     public enum NetClientStatus { Working, Stopped };
@@ -59,15 +52,19 @@ namespace Client
 
         public int Port { get; protected set; }
 
+        public Encoding DefaultEncoding { get; protected set; }
+
+        public NetProtocol Protocol { get; protected set; }
+
         /// <summary>
         /// This event is called when client receives server response
         /// </summary>
-        public event ResponseEventHandler ResponseEvent;
+        public event MessageEventHandler ResponseEvent;
 
         /// <summary>
         /// This event is called when Send() Method invokes before sending operation. Data contains sending message
         /// </summary>
-        public event SendEventHandler SendEvent;
+        public event MessageEventHandler SendEvent;
 
         /// <summary>
         /// This event is called immediately after connectetion creation
@@ -84,25 +81,28 @@ namespace Client
         /// </summary>
         public event NetErrorEventHandler NetErrorEvent;*/
 
-        private TcpClient tcpClient;
-        private NetworkStream stream;
-        private Thread thread;
-        private bool threadWorking = true;
-        private readonly int sleepTimeout;
-        private const int BufferSize = 4096;
+        protected TcpClient tcpClient;
+        protected NetworkStream stream;
+        protected Thread thread;
+        protected bool threadWorking = true;
+        protected readonly int sleepTimeout;
 
         /// <summary>
         /// Creates new NetClient. Client is created stopped. To start it call Start() method
         /// </summary>
         /// <param name="host">Server's host</param>
         /// <param name="port">Port used to connect server</param>
+        /// <param name="defaultEncoding"> Encoding that convert string to Byte array Encoding. (ASCII, Unicode)...</param>
         /// <param name="sleepTimeout">Timeout of trying to read server's response</param>
-        public NetClient(string host = "localhost", int port = 9505, int sleepTimeout = 50)
+        /// <param name="protocol"> Client is using NetProtocol by default(if protocol = null)</param>
+        public NetClient(string host = "localhost", int port = 9505, NetProtocol protocol = null, Encoding defaultEncoding = null, int sleepTimeout = 50)
         {
             Host = host;
             Port = port;
             this.sleepTimeout = sleepTimeout;
+            Protocol = protocol ?? new NetProtocol();
             Status = NetClientStatus.Stopped;
+            DefaultEncoding = defaultEncoding ?? Encoding.ASCII;
         }
 
         /// <summary>
@@ -144,45 +144,76 @@ namespace Client
             tcpClient.Close();
         }
 
-        public void Send(string message, bool trimMessage = true)
+        public void Send(string message)
+        {
+            Send(message, DefaultEncoding);
+        }
+
+        public void Send(string message, Encoding encoding)
+        {
+            Send(encoding.GetBytes(message));
+        }
+
+        public virtual void Send(byte[] message)
         {
             if (Status == NetClientStatus.Stopped)
                 throw new Exception("Cannot send a message, while server is stopped");
 
-            if (trimMessage)
-                message = message.Trim(new[] { ' ', '\n', '\t' });
-
             if (SendEvent != null)
-                SendEvent(this, new SendEventArgs(message));
+                SendEvent(this, new MessageEventArgs(message, DefaultEncoding));
 
-            var output = new StreamWriter(stream);
+            var output = new BinaryWriter(stream);
 
-            output.Write(message);
+            Protocol.Send(message, output);
             output.Flush();
+        }
+
+        public void Send(dynamic message)
+        {
+            Send(BitConverter.GetBytes(message));
         }
 
         /// <summary>
         /// Method is called in new thread
         /// </summary>
-        private void Work()
+        protected virtual void Work()
         {
-            var buffer = new byte[BufferSize];
-
             while (threadWorking)
             {
                 if (stream.DataAvailable)
                 {
-                    int length = tcpClient.Available;
-
-                    stream.Read(buffer, 0, length);
-                    var response = Encoding.ASCII.GetString(buffer, 0, length);
+                    var buffer = Protocol.Receive(stream, tcpClient);
 
                     if (ResponseEvent != null)
-                        ResponseEvent(this, new ResponseEventArgs(response));
+                        ResponseEvent(this, new MessageEventArgs(buffer, DefaultEncoding));
                 }
                 else
                     Thread.Sleep(sleepTimeout);
             }
+        }
+    }
+
+    /// <summary>
+    /// NetProtocol class is implements Send and Receive according to application net features
+    /// </summary>
+    public class NetProtocol
+    {
+        public virtual void Send(byte[] message, BinaryWriter output)
+        {
+            output.Write(message);
+        }
+
+        public virtual byte[] Receive(NetworkStream stream, TcpClient tcpClient)
+        {
+            var buffer = new byte[tcpClient.Available];
+            stream.Read(buffer, 0, tcpClient.Available);
+
+            return buffer;
+        }
+
+        public override string ToString()
+        {
+            return "NetProtocol";
         }
     }
 }

@@ -67,7 +67,7 @@ namespace fastJSON
 
             else if (obj is bool)
                 _output.Append(((bool)obj) ? "true" : "false"); // conform to standard
-
+           
             else if (
                 obj is int || obj is long || obj is double ||
                 obj is decimal || obj is float ||

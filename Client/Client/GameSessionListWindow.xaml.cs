@@ -24,6 +24,7 @@ namespace Client
         private void buttonRefresh_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Update Server List here
+            MainWindow.Client.GameSessionList();
 
             //Test:
             gameSessionList.Add(new GameSession() { Id = id, Name = "Игра #"+id, PlayersCount = new Random((int)DateTime.Now.Ticks).Next(5), PlayersLimit = 4 });
@@ -36,7 +37,7 @@ namespace Client
         {
             if (listBoxServers.SelectedIndex < 0)
             {
-                if(listBoxServers.Items.Count == 0)
+                if (listBoxServers.Items.Count == 0)
                     MessageBox.Show("В данный момент нету активных игр.");
                 else
                     MessageBox.Show("Выберите игру из списка.");
@@ -46,6 +47,8 @@ namespace Client
             var server = (GameSession) listBoxServers.SelectedItem;
 
             //TODO: Connect to server
+            MainWindow.Client.ResetHost(server.Name);
+            MainWindow.Client.Start();
 
             //if connected:
             var mw = new MainWindow();

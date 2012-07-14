@@ -76,6 +76,7 @@
     <Compile Include="fastJSON\JsonParser.cs" />
     <Compile Include="fastJSON\JsonSerializer.cs" />
     <Compile Include="fastJSON\SafeDictionary.cs" />
+    <Compile Include="GameClient.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>

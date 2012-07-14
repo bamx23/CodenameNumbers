@@ -33,7 +33,7 @@ namespace Client
                                                   };
 
         private readonly Game game;
-        public static NetClient Client;
+        public static GameClient Client;
 
         public GameSessionListWindow serverListWindow;
 
@@ -55,6 +55,7 @@ namespace Client
         private void buttonLeave_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Leave game here
+            Client.GameLeave();
             Close();
         }
 
@@ -85,8 +86,11 @@ namespace Client
                 case Key.Enter:
                     if (hitInput.Text.Length != 0)
                     {
-                        //TODO: HIT MAKES HERE
                         var hit = int.Parse(hitInput.Text);
+
+                        //TODO: HIT MAKES HERE
+                        Client.GameHit(hit);
+
                         game.AddHit(Game.me.UserId, hit == hitCounter + 1, hit, DateTime.UtcNow.Ticks, true);
                         if (hitCounter + 1 == hit)
                         {

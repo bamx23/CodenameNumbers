@@ -17,38 +17,36 @@ namespace Client
             InitializeComponent();
 
             gameSessionList = new List<GameSession>();
-            listBoxServers.ItemsSource = gameSessionList;
+            listBoxGameSessions.ItemsSource = gameSessionList;
         }
 
         private int id = 0;
         private void buttonRefresh_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Update Server List here
-            MainWindow.Client.GameSessionList();
+            GameClient.Instance.GameSessionList();
 
             //Test:
-            gameSessionList.Add(new GameSession() { Id = id, Name = "Игра #"+id, PlayersCount = new Random((int)DateTime.Now.Ticks).Next(5), PlayersLimit = 4 });
+            gameSessionList.Add(new GameSession { Id = id, Name = "Игра #"+id, PlayersCount = new Random((int)DateTime.Now.Ticks).Next(5), PlayersLimit = 4 });
             ++id;
 
-            listBoxServers.Items.Refresh();
+            listBoxGameSessions.Items.Refresh();
         }
 
         private void buttonConnect_Click(object sender, RoutedEventArgs e)
         {
-            if (listBoxServers.SelectedIndex < 0)
+            if (listBoxGameSessions.SelectedIndex < 0)
             {
-                if (listBoxServers.Items.Count == 0)
+                if (listBoxGameSessions.Items.Count == 0)
                     MessageBox.Show("В данный момент нету активных игр.");
                 else
                     MessageBox.Show("Выберите игру из списка.");
                 return;
             }
 
-            var server = (GameSession) listBoxServers.SelectedItem;
-
-            //TODO: Connect to server
-            MainWindow.Client.ResetHost(server.Name);
-            MainWindow.Client.Start();
+            var gameSession = (GameSession) listBoxGameSessions.SelectedItem;
+            //TODO: Connect to game session
+            GameClient.Instance.GameSessionJoin(gameSession.Id);
 
             //if connected:
             var mw = new MainWindow();

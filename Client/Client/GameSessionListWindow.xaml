@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CodenameNumbers - GameSession List" Height="259" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid>
-        <ListBox Margin="15,10,15,40" Name="listBoxServers">
+        <ListBox Margin="15,10,15,40" Name="listBoxGameSessions">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Foreground" Value="{Binding Path=Foreground}"/>

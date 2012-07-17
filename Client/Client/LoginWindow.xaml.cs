@@ -14,9 +14,7 @@ namespace Client
 
             try
             {
-                MainWindow.Client = new GameClient("luckygeck.dyndns-home.com");
-                MainWindow.Client.Start();
-                MainWindow.Client.NetworkClient.ResponseEvent += ((o, e) => MessageBox.Show(e.Message()));
+                GameClient.Instance.Start();
             }
             catch (Exception e)
             {
@@ -44,7 +42,7 @@ namespace Client
             }
 
             //TODO: Login check here
-            MainWindow.Client.Login(textBoxLogin.Text, textBoxPassword.Password);
+            GameClient.Instance.Login(textBoxLogin.Text, textBoxPassword.Password);
 
             var slw = new GameSessionListWindow();
             slw.Show();
@@ -54,8 +52,8 @@ namespace Client
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (MainWindow.Client != null && MainWindow.Client.NetworkClient.Status != NetClientStatus.Stopped)
-                MainWindow.Client.Stop();
+            if (GameClient.Instance.Client.Status != NetClientStatus.Stopped)
+                GameClient.Instance.Stop();
         }
 
         private void buttonRegistration_Click(object sender, RoutedEventArgs e)

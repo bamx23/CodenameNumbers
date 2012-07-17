@@ -62,7 +62,9 @@ namespace Client
 
     public class GameClient
     {
-        public NetClient NetworkClient { get; set; }
+        public NetClient Client { get; protected set; }
+
+        public static GameClient Instance { get; protected set; }
 
         public event NetErrorEventHandler NetErrorEvent;
 
@@ -70,10 +72,15 @@ namespace Client
 
         public event BoolResponseEventHandler GameSessionJoinEvent;
 
+        static GameClient()
+        {
+            Instance = new GameClient("192.168.33.55");
+        }
+
         public GameClient(string host)
         {
-            NetworkClient = new NetClient(host, protocol: new GameProtocol(), defaultEncoding: Encoding.ASCII);
-            NetworkClient.ResponseEvent += OnResponse;
+            Client = new NetClient(host, protocol: new GameProtocol(), defaultEncoding: Encoding.ASCII);
+            Client.ResponseEvent += OnResponse;
         }
 
         /// <summary>
@@ -82,9 +89,9 @@ namespace Client
         /// <param name="host"></param>
         public void ResetHost(string host)
         {
-            if(NetworkClient.Status == NetClientStatus.Working)
-                NetworkClient.Stop();
-            NetworkClient = new NetClient(host, NetworkClient.Port, new GameProtocol(), Encoding.ASCII, NetworkClient.SleepTimeout);
+            if(Client.Status == NetClientStatus.Working)
+                Client.Stop();
+            Client = new NetClient(host, Client.Port, new GameProtocol(), Encoding.ASCII, Client.SleepTimeout);
         }
 
         public void Login(string username, string password)
@@ -153,7 +160,7 @@ namespace Client
             var json = fastJSON.JSON.Instance.ToJSON(command);
             try
             {
-                NetworkClient.Send(json);
+                Client.Send(json);
             }
             catch (Exception e)
             {
@@ -166,7 +173,7 @@ namespace Client
         {
             try
             {
-                NetworkClient.Start();
+                Client.Start();
             }
             catch (Exception e)
             {
@@ -179,7 +186,7 @@ namespace Client
         {
             try
             {
-                NetworkClient.Stop();
+                Client.Stop();
             }
             catch (Exception e)
             {

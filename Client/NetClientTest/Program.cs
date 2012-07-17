@@ -15,8 +15,8 @@ namespace NetClientTest
         {
             var gClient = new GameClient("192.168.33.55");
 
-            gClient.NetworkClient.ResponseEvent += (o, e) => Console.WriteLine("server answer is " + e.Message());
-            gClient.NetworkClient.ResponseErrorEvent += (o, e) => Console.WriteLine("Response error occuried: " + e.Error);
+            gClient.Client.ResponseEvent += (o, e) => Console.WriteLine("server answer is " + e.Message());
+            gClient.Client.ResponseErrorEvent += (o, e) => Console.WriteLine("Response error occuried: " + e.Error);
             gClient.NetErrorEvent += (o, e) => Console.WriteLine("Net error occuried: " + e.Error);
             gClient.LoginEvent += (o, e) => { if (e.Ok) Console.WriteLine("Login ok"); else Console.WriteLine("Login not ok: " + e.Error); };
 

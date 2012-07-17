@@ -49,10 +49,14 @@
     <Compile Include="fastJSON\JsonParser.cs" />
     <Compile Include="fastJSON\JsonSerializer.cs" />
     <Compile Include="fastJSON\SafeDictionary.cs" />
-    <Compile Include="GameClient.cs" />
-    <Compile Include="NetClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Client\Client.csproj">
+      <Project>{F71605A7-9052-482E-AD92-298011CDC5CD}</Project>
+      <Name>Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

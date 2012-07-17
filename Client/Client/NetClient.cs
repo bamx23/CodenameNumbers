@@ -9,6 +9,18 @@ namespace Client
 {
     public delegate void MessageEventHandler(object sender, MessageEventArgs e);
 
+    public delegate void NetErrorEventHandler(object sender, NetErrorEventArgs e);
+
+    public class NetErrorEventArgs : EventArgs
+    {
+        public NetErrorEventArgs(string error)
+        {
+            Error = error;
+        }
+
+        public string Error { get; protected set; }
+    }
+
     public class MessageEventArgs : EventArgs
     {
         public byte[] ByteMessage { get; protected set; }
@@ -52,6 +64,8 @@ namespace Client
 
         public int Port { get; protected set; }
 
+        public int SleepTimeout { get; protected set; }
+
         public Encoding DefaultEncoding { get; protected set; }
 
         public NetProtocol Protocol { get; protected set; }
@@ -76,6 +90,8 @@ namespace Client
         /// </summary>
         public event EventHandler StopEvent;
 
+        public event NetErrorEventHandler ResponseErrorEvent;
+
         /*/// <summary>
         /// This event is called if some net-connected error occured 
         /// </summary>
@@ -85,7 +101,6 @@ namespace Client
         protected NetworkStream stream;
         protected Thread thread;
         protected bool threadWorking = true;
-        protected readonly int sleepTimeout;
 
         /// <summary>
         /// Creates new NetClient. Client is created stopped. To start it call Start() method
@@ -99,7 +114,7 @@ namespace Client
         {
             Host = host;
             Port = port;
-            this.sleepTimeout = sleepTimeout;
+            SleepTimeout = sleepTimeout;
             Protocol = protocol ?? new NetProtocol();
             Status = NetClientStatus.Stopped;
             DefaultEncoding = defaultEncoding ?? Encoding.ASCII;
@@ -120,7 +135,7 @@ namespace Client
             if (StartEvent != null)
                 StartEvent(this, EventArgs.Empty);
 
-            thread = new Thread(Work) { IsBackground = false };
+            thread = new Thread(Work) {IsBackground = false};
             thread.Start();
 
         }
@@ -182,13 +197,20 @@ namespace Client
             {
                 if (stream.DataAvailable)
                 {
-                    var buffer = Protocol.Receive(stream, tcpClient);
-
-                    if (ResponseEvent != null)
-                        ResponseEvent(this, new MessageEventArgs(buffer, DefaultEncoding));
+                    try
+                    {
+                        var buffer = Protocol.Receive(stream, tcpClient);
+                        if (ResponseEvent != null)
+                            ResponseEvent(this, new MessageEventArgs(buffer, DefaultEncoding));
+                    }
+                    catch (Exception e)
+                    {
+                        if(ResponseErrorEvent != null)
+                            ResponseErrorEvent(this, new NetErrorEventArgs(e.Message));
+                    }
                 }
                 else
-                    Thread.Sleep(sleepTimeout);
+                    Thread.Sleep(SleepTimeout);
             }
         }
     }

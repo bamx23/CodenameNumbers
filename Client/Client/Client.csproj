@@ -85,6 +85,9 @@
     <Compile Include="GameSessionListWindow.xaml.cs">
       <DependentUpon>GameSessionListWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RegistrationWindow.xaml.cs">
+      <DependentUpon>RegistrationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Skill.cs" />
     <Compile Include="SkillControl.xaml.cs">
       <DependentUpon>SkillControl.xaml</DependentUpon>
@@ -113,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameSessionListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RegistrationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

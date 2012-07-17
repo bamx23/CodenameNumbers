@@ -58,6 +58,14 @@ namespace Client
                 MainWindow.Client.Stop();
         }
 
+        private void buttonRegistration_Click(object sender, RoutedEventArgs e)
+        {
+            var rw = new RegistrationWindow();
+            rw.Show();
+            rw.Closed += (s, o) => Show();
+            Hide();
+        }
+
       
     }
 }

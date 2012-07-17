@@ -1,0 +1,20 @@
+﻿<Window x:Class="Client.RegistrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CodenameNumbers - Registration" Height="277" Width="327" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Content="CodenameNumbers" Height="40" HorizontalAlignment="Center" Margin="0,10,0,0" Name="labelCaption" VerticalAlignment="Top" FontSize="20"/>
+        <Label Content="Логин" Height="28" HorizontalAlignment="Left" Margin="20,50,0,0" Name="labelLogin" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,52,20,0" Name="textBoxLogin" VerticalAlignment="Top" Width="120" />
+        <Label Content="Пароль" Height="28" HorizontalAlignment="Left" Margin="20,80,0,0" Name="labelPassword" VerticalAlignment="Top" />
+        <PasswordBox Height="23" HorizontalAlignment="Right" Margin="0,82,20,0" Name="textBoxPassword" VerticalAlignment="Top" Width="120" />
+        <Label Content="Подтвердите пароль" Height="28" HorizontalAlignment="Left" Margin="20,110,0,0" Name="labelPasswordConfirm" VerticalAlignment="Top" />
+        <PasswordBox Height="23" HorizontalAlignment="Right" Margin="0,112,20,0" Name="textBoxPasswordConfirm" VerticalAlignment="Top" Width="120" />
+        <Label Content="E-mail" Height="28" HorizontalAlignment="Left" Margin="20,140,0,0" Name="labelEmail" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,142,20,0" Name="textBoxEmail" VerticalAlignment="Top" Width="120" />
+        <Label Content="Никнейм" Height="28" HorizontalAlignment="Left" Margin="20,170,0,0" Name="labelNickname" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,172,20,0" Name="textBoxNickname" VerticalAlignment="Top" Width="120" />
+        <Button Content="Регистрация" Height="23" HorizontalAlignment="Left" Margin="165,205,0,0" Name="buttonReg" VerticalAlignment="Top" Width="120" Click="buttonReg_Click" />
+        <Button Content="Отмена" Height="23" HorizontalAlignment="Left" Margin="70,205,0,0" Name="buttonCancel" VerticalAlignment="Top" Width="75" Click="buttonCancel_Click" />
+    </Grid>
+</Window>

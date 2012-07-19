@@ -10,10 +10,9 @@ namespace NetClientTest
 {
     class Program
     {
-
         static void Main(string[] args)
         {
-            var gClient = new GameClient("192.168.33.55");
+            var gClient = new GameClient("luckygeck.dyndns-home.com");
 
             gClient.Client.ResponseEvent += (o, e) => Console.WriteLine("server answer is " + e.Message());
             gClient.Client.ResponseErrorEvent += (o, e) => Console.WriteLine("Response error occuried: " + e.Error);

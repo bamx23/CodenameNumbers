@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -70,6 +72,8 @@ namespace Client
 
         public NetProtocol Protocol { get; protected set; }
 
+        public bool FireResponseEventAsync { get; protected set; }
+
         /// <summary>
         /// This event is called when client receives server response
         /// </summary>
@@ -99,18 +103,31 @@ namespace Client
 
         protected TcpClient tcpClient;
         protected NetworkStream stream;
-        protected Thread thread;
+        protected Thread workThread;     
+
         protected bool threadWorking = true;
+
+        //----------------------------------------------------
+        // This variables are used for async Response event
+        protected bool ResponseProcessedCompleted
+        {
+            get { return responseProcessedResult == null || responseProcessedResult.IsCompleted; }
+        }
+        protected IAsyncResult responseProcessedResult = null;
+        protected Queue<MessageEventArgs> responseQueue;
+        //----------------------------------------------------
 
         /// <summary>
         /// Creates new NetClient. Client is created stopped. To start it call Start() method
         /// </summary>
         /// <param name="host">Server's host</param>
         /// <param name="port">Port used to connect server</param>
-        /// <param name="defaultEncoding"> Encoding that convert string to Byte array Encoding. (ASCII, Unicode)...</param>
+        /// <param name="defaultEncoding">Encoding that convert string to Byte array Encoding. (ASCII, Unicode)...</param>
         /// <param name="sleepTimeout">Timeout of trying to read server's response</param>
-        /// <param name="protocol"> Client is using NetProtocol by default(if protocol = null)</param>
-        public NetClient(string host = "localhost", int port = 9505, NetProtocol protocol = null, Encoding defaultEncoding = null, int sleepTimeout = 50)
+        /// <param name="protocol">Client is using NetProtocol by default(if protocol = null)</param>
+        /// <param name="fireResponseEventAsync">If it is true ResponseEvent will be called in additional thread </param>
+        public NetClient(string host = "localhost", int port = 9505, NetProtocol protocol = null, 
+            Encoding defaultEncoding = null, int sleepTimeout = 50, bool fireResponseEventAsync = false)
         {
             Host = host;
             Port = port;
@@ -118,6 +135,7 @@ namespace Client
             Protocol = protocol ?? new NetProtocol();
             Status = NetClientStatus.Stopped;
             DefaultEncoding = defaultEncoding ?? Encoding.ASCII;
+            FireResponseEventAsync = fireResponseEventAsync;
         }
 
         /// <summary>
@@ -135,8 +153,8 @@ namespace Client
             if (StartEvent != null)
                 StartEvent(this, EventArgs.Empty);
 
-            thread = new Thread(Work) {IsBackground = false};
-            thread.Start();
+            workThread = new Thread(Work) {IsBackground = false};
+            workThread.Start();
 
         }
 
@@ -193,25 +211,49 @@ namespace Client
         /// </summary>
         protected virtual void Work()
         {
+            if (FireResponseEventAsync)
+                responseQueue = new Queue<MessageEventArgs>();
+
             while (threadWorking)
             {
                 if (stream.DataAvailable)
-                {
-                    try
-                    {
-                        var buffer = Protocol.Receive(stream, tcpClient);
-                        if (ResponseEvent != null)
-                            ResponseEvent(this, new MessageEventArgs(buffer, DefaultEncoding));
-                    }
-                    catch (Exception e)
-                    {
-                        if(ResponseErrorEvent != null)
-                            ResponseErrorEvent(this, new NetErrorEventArgs(e.Message));
-                    }
-                }
+                    ProcessResponse();
+                else if (responseQueue.Count != 0 && ResponseProcessedCompleted)
+                    SendResponseEvent(responseQueue.Dequeue());
                 else
                     Thread.Sleep(SleepTimeout);
             }
+        }
+
+        protected void ProcessResponse()
+        {
+            try
+            {
+                var buffer = Protocol.Receive(stream, tcpClient);
+                if (ResponseEvent != null)
+                {
+                    var messageArgs = new MessageEventArgs(buffer, DefaultEncoding);
+                    SendResponseEvent(messageArgs);
+                }
+            }
+            catch (Exception e)
+            {
+                if (ResponseErrorEvent != null)
+                    ResponseErrorEvent(this, new NetErrorEventArgs(e.Message));
+            }
+        }
+
+        protected void SendResponseEvent(MessageEventArgs messageArgs)
+        {
+            if (FireResponseEventAsync)
+            {
+                if (ResponseProcessedCompleted)
+                    responseProcessedResult = ResponseEvent.BeginInvoke(this, messageArgs, null, null);
+                else
+                    responseQueue.Enqueue(messageArgs);
+            }
+            else
+                ResponseEvent(this, messageArgs);
         }
     }
 

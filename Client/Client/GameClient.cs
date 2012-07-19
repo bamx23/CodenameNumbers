@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace Client
 {
@@ -62,9 +64,20 @@ namespace Client
 
     public class GameClient
     {
+        protected enum EventType
+        {
+            NetError,
+            Login,
+            GameSessionJoin
+        }
+
         public NetClient Client { get; protected set; }
 
         public static GameClient Instance { get; protected set; }
+
+        protected delegate void EventSync(EventType type, object e);
+
+        protected EventSync eventSyncDelegate;
 
         public event NetErrorEventHandler NetErrorEvent;
 
@@ -80,8 +93,9 @@ namespace Client
 
         public GameClient(string host)
         {
-            Client = new NetClient(host, protocol: new GameProtocol(), defaultEncoding: Encoding.ASCII);
+            Client = new NetClient(host, protocol: new GameProtocol(), defaultEncoding: Encoding.ASCII, fireResponseEventAsync: false);
             Client.ResponseEvent += OnResponse;
+            eventSyncDelegate = EventSyncDelegate;
         }
 
         /// <summary>
@@ -165,8 +179,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                if (NetErrorEvent != null)
-                    NetErrorEvent(this, new NetErrorEventArgs("Error occuried while message sending: " + e.Message));
+                NetErrorEvent(this, new NetErrorEventArgs("Error occuried while message sending: " + e.Message));
             }
         }
 
@@ -178,8 +191,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                if (NetErrorEvent != null)
-                    NetErrorEvent(this, new NetErrorEventArgs("Client start error occuried: " + e.Message));
+                SendEvent(EventType.NetError, new NetErrorEventArgs("Client start error occuried: " + e.Message));
             }
         }
 
@@ -191,8 +203,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                if (NetErrorEvent != null)
-                    NetErrorEvent(this, new NetErrorEventArgs("Client stop error occuried: " + e.Message));
+                SendEvent(EventType.NetError, new NetErrorEventArgs("Client stop error occuried: " + e.Message));
             }
         }
 
@@ -202,15 +213,14 @@ namespace Client
 
             if (messagesArray == null)
             {
-                if (NetErrorEvent != null)
-                    NetErrorEvent(this, new NetErrorEventArgs("Can't parse server's response. " + e.Message()));
+                SendEvent(EventType.NetError, new NetErrorEventArgs("Can't parse server's response. " + e.Message()));
                 return;
             }
             foreach (Dictionary<string, object> dictionary in messagesArray)
             {
-                if (!dictionary.ContainsKey("cmd") && NetErrorEvent != null)
+                if (!dictionary.ContainsKey("cmd"))
                 {
-                    NetErrorEvent(this, new NetErrorEventArgs(
+                    SendEvent(EventType.NetError, new NetErrorEventArgs(
                                       "Server's response doesn't contain \"cmd\" key, it can't be parsed. " + e.Message()));
                     return;
                 }
@@ -220,8 +230,7 @@ namespace Client
                 }
                 catch (Exception exception)
                 {
-                    if (NetErrorEvent != null)
-                        NetErrorEvent(this, new NetErrorEventArgs("Some error occuried, while parsing:" + exception.Message));
+                    SendEvent(EventType.NetError, new NetErrorEventArgs("Some error occuried, while parsing:" + exception.Message));
                 }
             }
 
@@ -236,8 +245,7 @@ namespace Client
                 var ok = (bool)command["OK"];
                 var errorCode = ok ? 0 : int.Parse(command["ERROR_CODE"].ToString());
 
-                if (GameSessionJoinEvent != null)
-                    GameSessionJoinEvent(this, new BoolEventArgs(ok, errorCode));
+                SendEvent(EventType.GameSessionJoin, new BoolEventArgs(ok, errorCode));
             }
             else if (cmd == ResponseType.GAMESESSION_LIST.ToString())
             {
@@ -264,11 +272,34 @@ namespace Client
                 var ok = (bool) command["OK"];
                 var errorCode = ok ? 0 : int.Parse(command["ERROR_CODE"].ToString());
 
-                if (LoginEvent != null)
-                    LoginEvent(this, new BoolEventArgs(ok, (int)errorCode));
+                SendEvent(EventType.Login, new BoolEventArgs(ok, (int)errorCode));
             }
-            else if (NetErrorEvent != null)
-                NetErrorEvent(this, new NetErrorEventArgs("Unknow response command found: " + message));
+            else 
+                SendEvent(EventType.NetError, new NetErrorEventArgs("Unknow response command found: " + message));
+        }
+
+        protected void EventSyncDelegate(EventType type, object e)
+        {
+            switch (type)
+            {
+                case EventType.NetError:
+                    if (NetErrorEvent != null)
+                        NetErrorEvent(this, e as NetErrorEventArgs);
+                    break;
+                case EventType.Login:
+                    if (LoginEvent != null)
+                        LoginEvent(this, e as BoolEventArgs);
+                    break;
+                case EventType.GameSessionJoin:
+                    if (GameSessionJoinEvent != null)
+                        GameSessionJoinEvent(this, e as BoolEventArgs);
+                    break;
+            }
+        }
+
+        protected void SendEvent(EventType type, object e)
+        {
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, eventSyncDelegate, type, e);
         }
     }
 

@@ -10,5 +10,6 @@
         <PasswordBox Height="23" HorizontalAlignment="Right" Margin="0,30,10,0" Name="textBoxPassword" VerticalAlignment="Center" Width="120" />
         <Button Content="Войти" Height="23" HorizontalAlignment="Center" Margin="100,0,0,15" Name="buttonLogin" VerticalAlignment="Bottom" Width="75" Click="ButtonLoginClick" />
         <Button Content="Регистрация" Height="23" HorizontalAlignment="Center" Margin="0,0,100,15" Name="buttonRegistration" VerticalAlignment="Bottom" Width="75" Click="buttonRegistration_Click" />
+        <Canvas Height="23" HorizontalAlignment="Center" Margin="210,0,0,15" Name="canvasLoginWaiting" VerticalAlignment="Bottom" Width="23"/>
     </Grid>
 </Window>

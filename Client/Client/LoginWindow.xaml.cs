@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Client
 {
@@ -8,13 +9,18 @@ namespace Client
     /// </summary>
     public partial class LoginWindow
     {
+        private LoadingAnimation loginWaiting;
+
         public LoginWindow()
         {
             InitializeComponent();
 
+            loginWaiting = new LoadingAnimation(canvasLoginWaiting);
+
             try
             {
                 GameClient.Instance.Start();
+                GameClient.Instance.LoginEvent += OnLoginResponse;
             }
             catch (Exception e)
             {
@@ -43,11 +49,23 @@ namespace Client
 
             //TODO: Login check here
             GameClient.Instance.Login(textBoxLogin.Text, textBoxPassword.Password);
+            loginWaiting.Play();
+        }
 
-            var slw = new GameSessionListWindow();
-            slw.Show();
-            slw.Closed += (s, o) => Close();
-            Hide();
+        protected void OnLoginResponse(object sender, BoolEventArgs e)
+        {
+            loginWaiting.Stop();
+            if (e.Ok)
+            {
+                var slw = new GameSessionListWindow();
+                slw.Show();
+                slw.Closed += (s, o) => Close();
+                Hide();
+            }
+            else
+            {
+                MessageBox.Show("Не удалось залогиниться. Ошибка: " + e.Error);
+            }
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -58,12 +76,12 @@ namespace Client
 
         private void buttonRegistration_Click(object sender, RoutedEventArgs e)
         {
+           
             var rw = new RegistrationWindow();
             rw.Show();
             rw.Closed += (s, o) => Show();
             Hide();
         }
-
       
     }
 }

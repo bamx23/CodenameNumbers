@@ -75,6 +75,7 @@ namespace Client
         static GameClient()
         {
             Instance = new GameClient("192.168.33.55");
+            //Instance = new GameClient("luckygeck.dyndns-home.com");
         }
 
         public GameClient(string host)

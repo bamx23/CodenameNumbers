@@ -218,7 +218,7 @@ namespace Client
             {
                 if (stream.DataAvailable)
                     ProcessResponse();
-                else if (responseQueue.Count != 0 && ResponseProcessedCompleted)
+                else if (responseQueue != null && responseQueue.Count != 0 && ResponseProcessedCompleted)
                     SendResponseEvent(responseQueue.Dequeue());
                 else
                     Thread.Sleep(SleepTimeout);

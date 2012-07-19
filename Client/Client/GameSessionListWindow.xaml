@@ -10,7 +10,9 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <Button Content="Подключиться" Height="23" HorizontalAlignment="Right" Margin="0,0,20,10" Name="buttonConnect" VerticalAlignment="Bottom" Width="100" Click="buttonConnect_Click" />
-        <Button Content="Обновить" Height="23" HorizontalAlignment="Right" Margin="0,0,125,10" Name="buttonRefresh" VerticalAlignment="Bottom" Width="100" Click="buttonRefresh_Click" />
+        <Button Content="Подключиться" Height="23" HorizontalAlignment="Right" Margin="0,0,50,10" Name="buttonConnect" VerticalAlignment="Bottom" Width="100" Click="buttonConnect_Click" />
+        <Button Content="Обновить" Height="23" HorizontalAlignment="Right" Margin="0,0,155,10" Name="buttonRefresh" VerticalAlignment="Bottom" Width="100" Click="buttonRefresh_Click" />
+        <Canvas Height="23" HorizontalAlignment="Right" Margin="0,0,20,10" Name="canvasConnect" VerticalAlignment="Bottom" Width="23" />
+        <Canvas Height="23" HorizontalAlignment="Right" Margin="0,0,260,10" Name="canvasUpdate" VerticalAlignment="Bottom" Width="23" />
     </Grid>
 </Window>

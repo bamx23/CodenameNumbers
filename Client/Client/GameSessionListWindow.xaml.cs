@@ -10,7 +10,10 @@ namespace Client
     /// </summary>
     public partial class GameSessionListWindow : Window
     {
-        public List<GameSession> gameSessionList;
+        protected List<GameSession> gameSessionList;
+
+        protected IAnimation updateAnimation;
+        protected IAnimation connectAnimation;
 
         public GameSessionListWindow()
         {
@@ -18,16 +21,29 @@ namespace Client
 
             gameSessionList = new List<GameSession>();
             listBoxGameSessions.ItemsSource = gameSessionList;
+
+            GameClient.Instance.GameSessionJoinEvent += OnGameSessionJoin;
+
+            updateAnimation = new LoadingAnimation(canvasUpdate);
+            connectAnimation = new LoadingAnimation(canvasConnect);
         }
 
         private int id = 0;
         private void buttonRefresh_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Update Server List here
             GameClient.Instance.GameSessionList();
 
+            updateAnimation.Play();
+
             //Test:
-            gameSessionList.Add(new GameSession { Id = id, Name = "Игра #"+id, PlayersCount = new Random((int)DateTime.Now.Ticks).Next(5), PlayersLimit = 4 });
+            OnGameSessionList(this, null);
+        }
+
+        private void OnGameSessionList(object sender, object e)
+        {
+            updateAnimation.Stop();
+
+            gameSessionList.Add(new GameSession { Id = id, Name = "Игра #" + id, PlayersCount = new Random((int)DateTime.Now.Ticks).Next(5), PlayersLimit = 4 });
             ++id;
 
             listBoxGameSessions.Items.Refresh();
@@ -45,15 +61,26 @@ namespace Client
             }
 
             var gameSession = (GameSession) listBoxGameSessions.SelectedItem;
-            //TODO: Connect to game session
-            GameClient.Instance.GameSessionJoin(gameSession.Id);
 
-            //if connected:
-            var mw = new MainWindow();
-            mw.Show();
-            mw.Closed += (s, o) => Show();
-            mw.serverListWindow = this;
-            Hide();
+            GameClient.Instance.GameSessionJoin(gameSession.Id);
+            connectAnimation.Play();
+        }
+
+        private void OnGameSessionJoin(object sender, BoolEventArgs e)
+        {
+            connectAnimation.Stop();
+            if(e.Ok)
+            {
+                var mw = new MainWindow();
+                mw.Show();
+                mw.Closed += (s, o) => Show();
+                mw.serverListWindow = this;
+                Hide();
+            }
+            else
+            {
+                MessageBox.Show("Не удалось подключиться к игре: " + e.Error);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -15,6 +15,7 @@
         <Label Content="Никнейм" Height="28" HorizontalAlignment="Left" Margin="20,170,0,0" Name="labelNickname" VerticalAlignment="Top" />
         <TextBox Height="23" HorizontalAlignment="Right" Margin="0,172,20,0" Name="textBoxNickname" VerticalAlignment="Top" Width="120" />
         <Button Content="Регистрация" Height="23" HorizontalAlignment="Left" Margin="165,205,0,0" Name="buttonReg" VerticalAlignment="Top" Width="120" Click="buttonReg_Click" />
-        <Button Content="Отмена" Height="23" HorizontalAlignment="Left" Margin="70,205,0,0" Name="buttonCancel" VerticalAlignment="Top" Width="75" Click="buttonCancel_Click" />
+        <Button Content="Отмена" Height="23" HorizontalAlignment="Left" Margin="20,205,0,0" Name="buttonCancel" VerticalAlignment="Top" Width="75" Click="buttonCancel_Click" />
+        <Canvas Height="23" HorizontalAlignment="Left" Margin="135,205,0,0" Name="canvasRegistration" VerticalAlignment="Top" Width="23" />
     </Grid>
 </Window>

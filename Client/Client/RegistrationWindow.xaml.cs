@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -19,9 +20,13 @@ namespace Client
     /// </summary>
     public partial class RegistrationWindow : Window
     {
+        protected LoadingAnimation registrationAnimation;
+
         public RegistrationWindow()
         {
             InitializeComponent();
+
+            registrationAnimation = new LoadingAnimation(canvasRegistration);
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
@@ -63,6 +68,10 @@ namespace Client
             }
 
             //TODO: Registration process
+
+            registrationAnimation.Play();
+            /*Заглушка:*/
+            new Thread(() => { Thread.Sleep(2000); Dispatcher.Invoke((Action) (() => registrationAnimation.Stop())); }).Start();
         }
     }
 }
